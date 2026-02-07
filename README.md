@@ -6,7 +6,7 @@ This project was born from the need to monitor the rapid increase in grocery pri
 
 ### Supermarkets to be supported:
 - [ ] Continente
-- [ ] Auchan
+- [x] Auchan
 - [ ] Pingo Doce
 - [ ] Aldi
 - [ ] Lidl
