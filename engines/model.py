@@ -10,6 +10,7 @@ class scrapModel:
         self.productSelector: str = ""
         self.nameSelector: str = ""
         self.priceSelector: str = ""
+        self.havebtn: bool = False
 
     def setup(self) -> None:
         self.page.goto(self.url, wait_until="networkidle")
@@ -38,13 +39,33 @@ class scrapModel:
         print(ultima_altura)
         while repeat:
             self.page.mouse.wheel(0, 5000)
-            self.page.wait_for_timeout(3500)
+            self.page.wait_for_timeout(3000)
             self.page.wait_for_load_state("domcontentloaded")
 
+            if self.havebtn:
+                try:
+                    # Usamos o seletor específico que vimos no inspetor
+                    btn = self.page.locator(".js-show-more-products")
+                    if btn.is_visible():
+                        print("Botão detetado. A clicar...")
+                        btn.click()
+                        # ESSENCIAL: Esperar que o site reaja ao clique antes de medir a altura
+                        self.page.wait_for_timeout(4000)
+                        self.page.wait_for_load_state("domcontentloaded")
+                except Exception:
+                    pass
+
             nova_altura = self.page.evaluate("document.body.scrollHeight")
-            print(nova_altura)
+            print(f"Altura: {nova_altura}")
+
             if nova_altura == ultima_altura:
-                break
+                self.page.wait_for_timeout(2000)
+                nova_altura = self.page.evaluate("document.body.scrollHeight")
+                if nova_altura == ultima_altura:
+                    print("Fim da página alcançado.")
+                    repeat = False
+                    break
+
             ultima_altura = nova_altura
 
     def getProducts(self) -> dict[str, str]:
@@ -53,12 +74,10 @@ class scrapModel:
 
         for item in produtos:
             try:
-                nome = item.locator(".auc-product-tile__name").inner_text().strip()
+                nome = item.locator(self.nameSelector).inner_text().strip()
 
                 try:
-                    preco_texto = (
-                        item.locator(".price .sales .value").inner_text().strip()
-                    )
+                    preco_texto = item.locator(self.priceSelector).inner_text().strip()
                 except Exception as e:
                     preco_texto = "N/D"
                     print(f"Erro ao ler preco: {e}")
