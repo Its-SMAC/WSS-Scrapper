@@ -39,7 +39,7 @@ class scrapModel:
             ultima_altura = nova_altura
 
     def search(self, query: str) -> None:
-        self.page.goto(f"{self.url}/pt/pesquisa?q={query}", wait_until="networkidle")
+        self.page.goto(f"{self.url}/pesquisa?q={query}", wait_until="networkidle")
         self.scrollToBottom()
 
     def getProducts(self) -> dict[str, str]:
