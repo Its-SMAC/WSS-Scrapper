@@ -4,11 +4,12 @@ from playwright.sync_api import Browser, Locator, Page
 class scrapModel:
     def __init__(self, browser: Browser) -> None:
         self.page: Page = browser.new_page()
-        self.url = ""
-        self.cookieName = ""
-        self.productSelector = ""
-        self.nameSelector = ""
-        self.priceSelector = ""
+        self.url: str = ""
+        self.urlsearch: str = ""
+        self.cookieName: str = ""
+        self.productSelector: str = ""
+        self.nameSelector: str = ""
+        self.priceSelector: str = ""
 
     def setup(self) -> None:
         self.page.goto(self.url, wait_until="networkidle")
@@ -25,22 +26,26 @@ class scrapModel:
         except Exception as e:
             print(f"Não foi possível clicar nos cookies: {e}")
 
+    def search(self, query: str) -> None:
+        self.page.goto(
+            f"{self.url}{self.urlsearch}{query}", wait_until="domcontentloaded"
+        )
+        self.scrollToBottom()
+
     def scrollToBottom(self) -> None:
         ultima_altura = self.page.evaluate("document.body.scrollHeight")
         repeat: bool = True
-
+        print(ultima_altura)
         while repeat:
-            self.page.mouse.wheel(0, 4000)
+            self.page.mouse.wheel(0, 5000)
             self.page.wait_for_timeout(3500)
+            self.page.wait_for_load_state("domcontentloaded")
 
             nova_altura = self.page.evaluate("document.body.scrollHeight")
+            print(nova_altura)
             if nova_altura == ultima_altura:
                 break
             ultima_altura = nova_altura
-
-    def search(self, query: str) -> None:
-        self.page.goto(f"{self.url}/pesquisa?q={query}", wait_until="networkidle")
-        self.scrollToBottom()
 
     def getProducts(self) -> dict[str, str]:
         produtos: list[Locator] = self.page.locator(self.productSelector).all()
@@ -62,3 +67,11 @@ class scrapModel:
             except Exception as e:
                 print(f"Erro ao ler produto: {e}")
         return prices
+
+    def doAll(self, q: str) -> dict[str, str]:
+        self.page.goto(self.url)
+        self.setup()
+        self.search(query=q)
+        resultados = self.getProducts()
+        print(f"Limpeza feita. {len(resultados)} itens extraídos para '{q}'.")
+        return resultados
