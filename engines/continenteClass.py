@@ -12,6 +12,7 @@ class Continente(scrapModel):
         self.productSelector = ".product"
         self.nameSelector = ".ct-pdp-details"  # ".pwc-tile--description"
         self.priceSelector = ".pwc-tile--price-secondary"
+        self.havebtn = True
 
 
 if __name__ == "__main__":
@@ -20,4 +21,11 @@ if __name__ == "__main__":
         continente: Continente = Continente(browser)
         q: str = input("Qual o produto? ")
         data: dict[str, str] = continente.doAll(q)
-        print(data)
+        for nome, preco in data.items():
+            nomeComPeso: str
+            nometratado: list[str] = nome.split("\n")
+            if len(nometratado) > 2:
+                nomeComPeso = nometratado[0] + nometratado[-1]
+            else:
+                nomeComPeso = nometratado[0]
+            print(nomeComPeso, " | ", preco)
