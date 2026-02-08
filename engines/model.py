@@ -11,6 +11,7 @@ class scrapModel:
         self.nameSelector: str = ""
         self.priceSelector: str = ""
         self.havebtn: bool = False
+        self.btnname: str = ""
 
     def setup(self) -> None:
         self.page.goto(self.url, wait_until="networkidle")
@@ -44,8 +45,7 @@ class scrapModel:
 
             if self.havebtn:
                 try:
-                    # Usamos o seletor específico que vimos no inspetor
-                    btn = self.page.locator(".js-show-more-products")
+                    btn = self.page.locator(self.btnname)
                     if btn.is_visible():
                         print("Botão detetado. A clicar...")
                         btn.click()
@@ -74,10 +74,10 @@ class scrapModel:
 
         for item in produtos:
             try:
-                nome = item.locator(self.nameSelector).inner_text().strip()
+                nome: str = item.locator(self.nameSelector).inner_text().strip()
 
                 try:
-                    preco_texto = str(
+                    preco_texto: str = str(
                         item.locator(self.priceSelector).text_content()
                     ).strip()
                 except Exception as e:
