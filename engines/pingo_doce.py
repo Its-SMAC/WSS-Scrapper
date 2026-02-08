@@ -24,6 +24,7 @@ class PingoDoce(scrapModel):
         for item in produtos:
             try:
                 nome: str = item.locator(self.nameSelector).inner_text().strip()
+                marca: str = item.locator(".product-brand-name").inner_text().strip()
 
                 try:
                     preco_raw: str = str(
@@ -34,7 +35,7 @@ class PingoDoce(scrapModel):
                     preco_texto = "N/D"
                     print(f"Erro ao ler preco: {e}")
 
-                prices[nome] = preco_texto
+                prices[nome + " " + marca] = preco_texto
             except Exception as e:
                 print(f"Erro ao ler produto: {e}")
         return prices
