@@ -10,8 +10,8 @@ class Continente(scrapModel):
         self.urlsearch = "/pesquisa/?q="
         self.cookieName = "permitir todos"
         self.productSelector = ".product"
-        self.nameSelector = ".ct-pdp-details"  # ".pwc-tile--description"
-        self.priceSelector = ".pwc-tile--price-secondary"
+        self.nameSelector = ".pwc-tile--description"
+        self.priceSelector = ".pwc-tile--price-primary"
         self.havebtn = True
 
 
@@ -22,10 +22,13 @@ if __name__ == "__main__":
         q: str = input("Qual o produto? ")
         data: dict[str, str] = continente.doAll(q)
         for nome, preco in data.items():
-            nomeComPeso: str
-            nometratado: list[str] = nome.split("\n")
-            if len(nometratado) > 2:
-                nomeComPeso = nometratado[0] + nometratado[-1]
-            else:
-                nomeComPeso = nometratado[0]
-            print(nomeComPeso, " | ", preco)
+            print(nome, " | ", preco)
+
+        # for nome, preco in data.items():
+        #     nomeComPeso: str
+        #     nometratado: list[str] = nome.split("\n")
+        #     if len(nometratado) > 2:
+        #         nomeComPeso = nometratado[0] + nometratado[-1]
+        #     else:
+        #         nomeComPeso = nometratado[0]
+        #     print(nomeComPeso, " | ", preco)

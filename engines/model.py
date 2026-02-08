@@ -77,7 +77,9 @@ class scrapModel:
                 nome = item.locator(self.nameSelector).inner_text().strip()
 
                 try:
-                    preco_texto = item.locator(self.priceSelector).inner_text().strip()
+                    preco_texto = str(
+                        item.locator(self.priceSelector).text_content()
+                    ).strip()
                 except Exception as e:
                     preco_texto = "N/D"
                     print(f"Erro ao ler preco: {e}")
