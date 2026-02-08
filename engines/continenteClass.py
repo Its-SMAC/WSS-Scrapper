@@ -13,6 +13,7 @@ class Continente(scrapModel):
         self.nameSelector = ".pwc-tile--description"
         self.priceSelector = ".pwc-tile--price-primary"
         self.havebtn = True
+        self.btnname = ".js-show-more-products"
 
 
 if __name__ == "__main__":
