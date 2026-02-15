@@ -5,16 +5,16 @@ Markets:
     'P' = Pingo doce
 """
 
-from flask import Flask
+from fastapi import FastAPI
 
-app = Flask(__name__)
-
-
-@app.route("/")
-def home():
-    return "Home Page"
+app = FastAPI()
 
 
-@app.route("/status")
-def status():
+@app.get("/")
+async def home():
+    return {"message": "Home Page"}
+
+
+@app.get("/status")
+async def status():
     return "Api was working"

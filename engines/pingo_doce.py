@@ -48,4 +48,4 @@ if __name__ == "__main__":
         q: str = input("Qual o produto? ")
         data: dict[str, str] = continente.doAll(q)
         for nome, preco in data.items():
-            print(nome, " | ", preco)
+            print(nome, "|", preco)
