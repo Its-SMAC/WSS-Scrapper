@@ -5,9 +5,9 @@
 This project was born from the need to monitor the rapid increase in grocery prices and help manage personal budgets more effectively.
 
 ### Supermarkets to be supported:
-- [ ] Continente
+- [x] Continente
 - [x] Auchan
-- [ ] Pingo Doce
+- [x] Pingo Doce
 - [ ] Aldi
 - [ ] Lidl
 - [ ] E.Leclerc
